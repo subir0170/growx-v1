@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "GrowUp - X & Telegram AI Assistant",
+  "version": "1.1",
+  "description": "Automated X & Telegram engagement assistant powered by Gemini AI.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs",
+    "cookies",
+    "sidePanel",
+    "alarms"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:9999/*",
+    "https://x.com/*",
+    "https://twitter.com/*",
+    "https://web.telegram.org/*",
+    "https://t.me/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content-x.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://web.telegram.org/*"],
+      "js": ["content-telegram.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_title": "GrowUp AI Assistant"
+  }
+}

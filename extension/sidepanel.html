@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrowUp AI Assistant</title>
+  <link rel="stylesheet" href="sidepanel.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <!-- ==================== AUTH ==================== -->
+  <div id="auth-container" class="container">
+    <div class="auth-header">
+      <div class="logo">
+        <i class="fa-solid fa-robot"></i>
+      </div>
+      <h1>GrowUp AI</h1>
+      <p class="subtitle">X & Telegram Engagement Assistant</p>
+    </div>
+
+    <div class="tabs">
+      <button id="show-login" class="tab-btn active">Login</button>
+      <button id="show-register" class="tab-btn">Register</button>
+    </div>
+
+    <!-- Login -->
+    <form id="login-form" class="auth-form">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" required placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" required placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn primary-btn">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </button>
+      <p id="login-error" class="error-msg"></p>
+    </form>
+
+    <!-- Register -->
+    <form id="register-form" class="auth-form" style="display: none;">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" required placeholder="John Doe" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" required placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" required placeholder="••••••••" />
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="reg-confirm" required placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn primary-btn">
+        <i class="fa-solid fa-user-plus"></i> Create Account
+      </button>
+      <p id="reg-error" class="error-msg"></p>
+    </form>
+  </div>
+
+  <!-- ==================== APP ==================== -->
+  <div id="app-container" class="container" style="display: none;">
+    <!-- Top Nav -->
+    <nav class="navbar">
+      <button class="nav-btn active" data-target="dashboard-view" title="Dashboard">
+        <i class="fa-solid fa-chart-pie"></i>
+      </button>
+      <button class="nav-btn" data-target="account-view" title="Accounts">
+        <i class="fa-solid fa-user-gear"></i>
+      </button>
+      <button class="nav-btn" data-target="queue-view" title="Queue">
+        <i class="fa-solid fa-list-check"></i>
+      </button>
+      <button class="nav-btn" data-target="history-view" title="History">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+      </button>
+      <button class="nav-btn" data-target="settings-view" title="Settings">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+      <button id="logout-btn" class="nav-btn logout" title="Logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </nav>
+
+    <div class="content-area">
+      <!-- ========== DASHBOARD ========== -->
+      <div id="dashboard-view" class="view">
+        <div class="page-header">
+          <h2 id="welcome-user">Hello, User</h2>
+          <p class="muted">AI-powered engagement control</p>
+        </div>
+
+        <!-- Automation Control Card -->
+        <div class="card control-card">
+          <div class="control-header">
+            <div>
+              <h3>Automation</h3>
+              <div class="status-row">
+                <span id="status-dot" class="status-dot stopped"></span>
+                <span id="auto-status">Stopped</span>
+              </div>
+            </div>
+            <button id="toggle-automation-btn" class="btn primary-btn start-btn">
+              <i class="fa-solid fa-play"></i> Start
+            </button>
+          </div>
+
+          <div class="stats-mini">
+            <div class="mini-stat">
+              <span class="label">Processed</span>
+              <span id="processed-count" class="value">0</span>
+            </div>
+            <div class="mini-stat">
+              <span class="label">Last Error</span>
+              <span id="last-error" class="value error-text">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-file-lines"></i></div>
+            <div>
+              <div class="stat-value" id="stat-total-posts">0</div>
+              <div class="stat-label">Total Posts</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-comments"></i></div>
+            <div>
+              <div class="stat-value" id="stat-total-responses">0</div>
+              <div class="stat-label">Responses</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+              <div class="stat-value" id="stat-completed">0</div>
+              <div class="stat-label">Completed</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="fa-solid fa-hourglass-half"></i></div>
+            <div>
+              <div class="stat-value" id="stat-pending">0</div>
+              <div class="stat-label">Pending</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Recent Activity</h3>
+        <div id="recent-activity-list" class="list-container"></div>
+      </div>
+
+      <!-- ========== ACCOUNT ========== -->
+      <div id="account-view" class="view" style="display: none;">
+        <div class="page-header">
+          <h2>Connected Accounts</h2>
+          <p class="muted">Link your X and Telegram sources</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i class="fa-brands fa-x-twitter"></i> X (Twitter)
+          </div>
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="x-username" placeholder="your_x_username" />
+          </div>
+          <button id="save-x" class="btn secondary-btn">Save X Account</button>
+          <p class="status-text">Status: <span id="x-status">Disconnected</span></p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i class="fa-brands fa-telegram"></i> Telegram Source
+          </div>
+          <div class="form-group">
+            <label>Username / Group</label>
+            <input type="text" id="telegram-username" placeholder="telegram_username" />
+          </div>
+          <button id="save-telegram" class="btn secondary-btn">Save Telegram</button>
+          <p class="status-text">Status: <span id="telegram-status">Disconnected</span></p>
+        </div>
+      </div>
+
+      <!-- ========== QUEUE ========== -->
+      <div id="queue-view" class="view" style="display: none;">
+        <div class="page-header">
+          <h2>Post Queue</h2>
+          <p class="muted">Manual add + live queue</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Add Post Manually</div>
+          <div class="form-group">
+            <input type="text" id="q-username" placeholder="X Username" />
+          </div>
+          <div class="form-group">
+            <input type="url" id="q-url" placeholder="https://x.com/.../status/..." />
+          </div>
+          <div class="form-group">
+            <textarea id="q-text" rows="3" placeholder="Post text..."></textarea>
+          </div>
+          <button id="add-queue-btn" class="btn primary-btn">Add to Queue</button>
+        </div>
+
+        <div id="queue-list" class="list-container"></div>
+      </div>
+
+      <!-- ========== HISTORY ========== -->
+      <div id="history-view" class="view" style="display: none;">
+        <div class="page-header">
+          <h2>Response History</h2>
+          <p class="muted">All completed engagements</p>
+        </div>
+        <div id="history-list" class="list-container"></div>
+      </div>
+
+      <!-- ========== SETTINGS ========== -->
+      <div id="settings-view" class="view" style="display: none;">
+        <div class="page-header">
+          <h2>Settings</h2>
+          <p class="muted">AI personality & profile</p>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="set-name" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="text" id="set-email" disabled />
+          </div>
+          <div class="form-group">
+            <label>AI Role</label>
+            <input type="text" id="set-role" placeholder="Professional / Expert / ..." />
+          </div>
+          <div class="form-group">
+            <label>AI Tone</label>
+            <input type="text" id="set-tone" placeholder="Friendly / Casual / Formal" />
+          </div>
+          <div class="form-group">
+            <label>Custom Prompt</label>
+            <textarea id="set-prompt" rows="4" placeholder="Extra instructions for Gemini..."></textarea>
+          </div>
+          <button id="save-settings" class="btn primary-btn">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
